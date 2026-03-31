@@ -21,7 +21,6 @@ La chiave di cifratura (DEK) è derivata tramite HKDF-SHA256 da una chiave radic
 
 - **Flutter** >= 3.19 con Dart SDK >= 3.3
 - **Xcode** (per build iOS) — testato su iPhone 15, iOS 17
-- **Firebase** progetto configurato (Authentication + Firestore)
 - Backend in esecuzione (vedi `../sorgentibackendtesi/`)
 
 ## Installazione
@@ -29,13 +28,6 @@ La chiave di cifratura (DEK) è derivata tramite HKDF-SHA256 da una chiave radic
 ```bash
 flutter pub get
 ```
-
-### Configurazione Firebase
-
-1. Crea un progetto su [Firebase Console](https://console.firebase.google.com)
-2. Aggiungi un'app iOS e scarica `GoogleService-Info.plist`
-3. Posiziona il file in `ios/Runner/GoogleService-Info.plist`
-4. Abilita **Authentication** (Email/Password) e **Firestore** nel progetto Firebase
 
 ### Configurazione backend
 
@@ -68,7 +60,7 @@ flutter run --release
 
 ```
 lib/
-├── main.dart                  # Entry point, routing, autenticazione Firebase
+├── main.dart                  # Entry point e routing dell'applicazione
 ├── crypto/
 │   ├── encryption_service.dart  # AES-256-GCM, HKDF, cifratura record
 │   ├── key_manager.dart         # Gestione KEK e DEK (secure storage)
@@ -99,7 +91,6 @@ lib/
 | `cryptography` | AES-256-GCM, HKDF-SHA256, Ed25519, X25519 |
 | `flutter_secure_storage` | Archiviazione sicura delle chiavi nel keychain iOS |
 | `web3dart` | Firma transazioni Ethereum (secp256k1) |
-| `firebase_auth` / `cloud_firestore` | Autenticazione e database cloud |
 | `dio` / `http` | Chiamate HTTP al backend |
 | `shared_preferences` | Preferenze locali non sensibili |
 
