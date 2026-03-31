@@ -5,7 +5,7 @@ Applicazione mobile Flutter per la raccolta, cifratura e condivisione sicura di 
 ## Architettura
 
 ```
-iPhone (HealthKit)
+Dispositivo mobile (HealthKit / Health Connect)
     │
     ▼
 AES-256-GCM (cifratura locale)
@@ -20,7 +20,8 @@ La chiave di cifratura (DEK) è derivata tramite HKDF-SHA256 da una chiave radic
 ## Requisiti
 
 - **Flutter** >= 3.19 con Dart SDK >= 3.3
-- **Xcode** (per build iOS) — testato su iPhone 15, iOS 17
+- **Xcode** (per build iOS) oppure **Android Studio** (per build Android)
+- Testato su iPhone 15 (iOS 17) e dispositivo Android
 - Backend in esecuzione (vedi `../sorgentibackendtesi/`)
 
 ## Installazione
@@ -52,13 +53,19 @@ static const String baseUrl = 'http://TUO_SERVER:8787';
 # Su simulatore iOS
 flutter run
 
-# Su dispositivo fisico (richiede Xcode e provisioning)
+# Su emulatore Android
+flutter run
+
+# Su dispositivo fisico iOS (richiede Xcode e provisioning)
+flutter run --release
+
+# Su dispositivo fisico Android
 flutter run --release
 ```
 
 ## Funzionalità principali
 
-- **Raccolta dati sanitari**: lettura di passi, frequenza cardiaca, ossigeno nel sangue e sonno tramite Apple HealthKit
+- **Raccolta dati sanitari**: lettura di passi, frequenza cardiaca, ossigeno nel sangue e sonno tramite HealthKit (iOS) e Health Connect (Android)
 - **Cifratura locale**: ogni record è cifrato con AES-256-GCM prima di lasciare il dispositivo
 - **Upload IPFS**: i dati cifrati vengono caricati su IPFS tramite il backend relay, che restituisce un CID immutabile
 - **Ancoraggio blockchain**: l'hash del manifest viene registrato su Ethereum Sepolia tramite il contratto `AnchorRegistry` con il pattern relay (firma off-chain ECDSA dell'utente)
@@ -96,15 +103,15 @@ lib/
 
 | Pacchetto | Uso |
 |-----------|-----|
-| `health` | Lettura dati da Apple HealthKit |
+| `health` | Lettura dati da HealthKit (iOS) e Health Connect (Android) |
 | `cryptography` | AES-256-GCM, HKDF-SHA256, Ed25519, X25519 |
-| `flutter_secure_storage` | Archiviazione sicura delle chiavi nel keychain iOS |
+| `flutter_secure_storage` | Archiviazione sicura delle chiavi (Keychain su iOS, Keystore su Android) |
 | `web3dart` | Firma transazioni Ethereum (secp256k1) |
 | `dio` / `http` | Chiamate HTTP al backend |
 | `shared_preferences` | Preferenze locali non sensibili |
 
 ## Note
 
-- L'app è progettata e testata per **iOS**. Il supporto Android non è stato oggetto di questa tesi.
+- L'app è stata testata su **iOS** (iPhone 15, iOS 17) e **Android**.
 - I dati sanitari non vengono mai inviati in chiaro: la cifratura avviene interamente sul dispositivo prima di qualsiasi comunicazione di rete.
 - Il file `logbenchmarkcompleto.csv` nella root contiene i dati di benchmark delle operazioni crittografiche raccolti durante i test su iPhone 15.
