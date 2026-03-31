@@ -31,10 +31,19 @@ flutter pub get
 
 ### Configurazione backend
 
-Nel file `lib/services/ipfs_client.dart` (o nella costante di configurazione) imposta l'URL del backend:
+L'URL del backend è definito in due posti:
+
+- `lib/main.dart` → `kBackendBaseUrl`
+- `lib/services/directory_service.dart` → `baseUrl`
+
+Aggiorna entrambi con l'indirizzo del tuo server:
 
 ```dart
-const String backendUrl = 'http://localhost:8787';
+// lib/main.dart
+static const String kBackendBaseUrl = 'http://TUO_SERVER:8787';
+
+// lib/services/directory_service.dart
+static const String baseUrl = 'http://TUO_SERVER:8787';
 ```
 
 ## Avvio
